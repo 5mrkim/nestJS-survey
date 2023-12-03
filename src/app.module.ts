@@ -1,3 +1,8 @@
+import { Answer } from './entity/answer.entity';
+import { Choice } from './entity/choice.entity';
+import { Question } from './entity/question.entity';
+import { SurveyService } from './survey/survey.service';
+import { Survey } from './entity/survey.entity';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -23,13 +28,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [],
+      entities: [Survey, Question, Choice, Answer],
       synchronize: true,
       logging: true,
     }),
     SurveyModule,
   ],
-  controllers: [AppController, SurveyController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
