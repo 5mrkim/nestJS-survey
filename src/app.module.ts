@@ -9,13 +9,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
-      autoSchemaFile: 'schema.gql',
-      playground: true,
-      debug: true,
-      driver: ApolloDriver, // Apollo Server를 직접 사용하도록 변경
-      path: '/graphql',
-    }),
+    // GraphQLModule.forRoot({
+    //   autoSchemaFile: 'schema.gql',
+    //   playground: true,
+    //   debug: true,
+    //   driver: ApolloDriver, // Apollo Server를 직접 사용하도록 변경
+    //   path: '/graphql',
+    // }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -24,7 +24,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [],
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     SurveyModule,
