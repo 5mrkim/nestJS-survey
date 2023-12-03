@@ -1,0 +1,35 @@
+import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { SurveyController } from './survey/survey.controller';
+import { SurveyModule } from './survey/survey.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+
+@Module({
+  imports: [
+    GraphQLModule.forRoot({
+      autoSchemaFile: 'schema.gql',
+      playground: true,
+      debug: true,
+      driver: ApolloDriver, // Apollo Server를 직접 사용하도록 변경
+      path: '/graphql',
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      entities: [],
+      synchronize: false,
+      logging: true,
+    }),
+    SurveyModule,
+  ],
+  controllers: [AppController, SurveyController],
+  providers: [AppService],
+})
+export class AppModule {}
