@@ -8,5 +8,6 @@ import { SurveyService } from './survey.service';
   imports: [TypeOrmModule.forFeature([Survey])],
   controllers: [SurveyController],
   providers: [SurveyService],
+  exports: [SurveyService],
 })
 export class SurveyModule {}
