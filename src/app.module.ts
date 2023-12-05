@@ -17,6 +17,8 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { QuestionController } from './question/question.controller';
 import { QuestionModule } from './question/question.module';
+import { ChoiceController } from './choice/choice.controller';
+import { ChoiceModule } from './choice/choice.module';
 
 @Module({
   imports: [
@@ -40,8 +42,9 @@ import { QuestionModule } from './question/question.module';
     }),
     SurveyModule,
     QuestionModule,
+    ChoiceModule,
   ],
-  controllers: [AppController, QuestionController],
+  controllers: [AppController, QuestionController, ChoiceController],
   providers: [
     AppService,
     { provide: APP_INTERCEPTOR, useClass: SuccessInterceptor },

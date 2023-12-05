@@ -3,15 +3,6 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class QuestionCreateDto {
   @IsNotEmpty()
-  @IsNumber()
-  @ApiProperty({
-    description: '설문지 pk',
-    required: true,
-    example: 4,
-  })
-  surveyId: number;
-
-  @IsNotEmpty()
   @IsString()
   @ApiProperty({
     description: '문항 제목',

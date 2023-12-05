@@ -1,3 +1,5 @@
+import { PathIdDto } from './dto/question-path.dto';
+import { UpdateQuestionDto } from './dto/update-question.dto';
 import { QuestionService } from './question.service';
 import { QuestionCreateDto } from './dto/create-question.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -9,27 +11,38 @@ import {
   Put,
   Body,
   ValidationPipe,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 @ApiTags('question')
 @Controller('question')
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
-  @Post()
+  @Post(':id')
   @ApiOperation({
     summary: '질문생성 API',
     description: '질문생성 API',
   })
-  create(@Body(new ValidationPipe()) data: QuestionCreateDto) {
-    return this.questionService.createQuestion(data);
+  create(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(new ValidationPipe()) data: QuestionCreateDto,
+  ) {
+    console.log(id);
+    return this.questionService.createQuestion(id, data);
   }
 
-  @Put()
+  @Put(':id')
   @ApiOperation({
     summary: '질문 수정 API',
     description: '질문 수정 API',
   })
-  update() {}
+  update(
+    @Param('id', ParseIntPipe) id: PathIdDto,
+    @Body(new ValidationPipe()) data: UpdateQuestionDto,
+  ) {
+    return this.questionService.updateQuestion(id, data);
+  }
 
   @Get()
   @ApiOperation({
@@ -38,10 +51,12 @@ export class QuestionController {
   })
   find() {}
 
-  @Delete()
+  @Delete(':id')
   @ApiOperation({
     summary: '질문 삭제 API',
     description: '질문 삭제 API',
   })
-  delete() {}
+  delete(@Param('id', ParseIntPipe) id: PathIdDto) {
+    return this.questionService.deleteQuestion(id);
+  }
 }
