@@ -1,3 +1,4 @@
+import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class SurveyCreateDto {
   @ApiProperty({
@@ -5,5 +6,7 @@ export class SurveyCreateDto {
     required: true,
     example: '1',
   })
+  @IsNotEmpty()
+  @IsString()
   title: string;
 }

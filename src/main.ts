@@ -1,3 +1,4 @@
+import { HttpExceptionFilter } from './http-exception/http-exception.filter';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -6,6 +7,8 @@ declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 4000;
+
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('설문지 API문서')

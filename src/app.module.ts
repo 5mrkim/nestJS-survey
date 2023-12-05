@@ -1,3 +1,5 @@
+import { HttpExceptionFilter } from './http-exception/http-exception.filter';
+import { SuccessInterceptor } from './interceptors/success.interceptor';
 import { Answer } from './entity/answer.entity';
 import { Choice } from './entity/choice.entity';
 import { Question } from './entity/question.entity';
@@ -10,6 +12,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SurveyController } from './survey/survey.controller';
 import { SurveyModule } from './survey/survey.module';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
@@ -29,12 +32,15 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [Survey, Question, Choice, Answer],
-      synchronize: true,
+      synchronize: false,
       logging: true,
     }),
     SurveyModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    { provide: APP_INTERCEPTOR, useClass: SuccessInterceptor },
+  ],
 })
 export class AppModule {}
