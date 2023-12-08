@@ -19,10 +19,20 @@ import { QuestionController } from './question/question.controller';
 import { QuestionModule } from './question/question.module';
 import { ChoiceController } from './choice/choice.controller';
 import { ChoiceModule } from './choice/choice.module';
+import { AnswerController } from './answer/answer.controller';
+import { AnswerModule } from './answer/answer.module';
 
 @Module({
   imports: [
+    GraphQLModule.forRoot({
+      typePaths: ['./**/*.graphql'],
+      playground: true,
+      debug: true,
+      driver: ApolloDriver,
+      path: '/graphql',
+    }),
     // GraphQLModule.forRoot({
+    //   typePaths: ['./src/**/*.graphql'],
     //   autoSchemaFile: 'schema.gql',
     //   playground: true,
     //   debug: true,
@@ -43,8 +53,14 @@ import { ChoiceModule } from './choice/choice.module';
     SurveyModule,
     QuestionModule,
     ChoiceModule,
+    AnswerModule,
   ],
-  controllers: [AppController, QuestionController, ChoiceController],
+  controllers: [
+    AppController,
+    QuestionController,
+    ChoiceController,
+    AnswerController,
+  ],
   providers: [
     AppService,
     { provide: APP_INTERCEPTOR, useClass: SuccessInterceptor },

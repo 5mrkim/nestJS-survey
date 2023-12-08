@@ -13,6 +13,7 @@
     "start:dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "start:pm2": "pm2 start dist/main.js",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --dataSource ./src/database/data-source.ts",
     "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./src/database/migrations/Migration",
     "migration:generate": "npm run typeorm migration:generate ./src/database/migrations/Migration",
@@ -42,6 +43,7 @@
     "graphql": "^16.8.1",
     "graphql-tools": "^9.0.0",
     "pg": "^8.11.3",
+    "pm2": "^5.3.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.17"

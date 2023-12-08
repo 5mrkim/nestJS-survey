@@ -1,0 +1,63 @@
+type Survey {
+  survey_id: Int!
+  title: String!
+  created_at: String!
+  questions: [Question!]!
+}
+
+type Question {
+  question_id: Int!
+  title: String!
+  score: Int!
+  survey: Survey!
+  choices: [Choice!]!
+  answers: [Answer!]!
+}
+
+type Choice {
+  choice_id: Int!
+  contents: String!
+  question: Question!
+  answers: [Answer!]!
+}
+
+type Answer {
+  answer_id: Int!
+  question: Question!
+  choice: Choice!
+  user_id: String!
+  created_at: String!
+}
+
+input CreateSurveyInput {
+  title: String!
+}
+
+input CreateQuestionInput {
+  title: String!
+  score: Int!
+  survey_id: Int!
+}
+
+input CreateChoiceInput {
+  contents: String!
+  question_id: Int!
+}
+
+input CreateAnswerInput {
+  user_id: String!
+  question_id: Int!
+  choice_id: Int!
+}
+
+type Query {
+  surveys: [Survey!]!
+  survey(survey_id: Int!): Survey!
+}
+
+type Mutation {
+  createSurvey(input: CreateSurveyInput!): Survey!
+  createQuestion(input: CreateQuestionInput!): Question!
+  createChoice(input: CreateChoiceInput!): Choice!
+  createAnswer(input: CreateAnswerInput!): Answer!
+}

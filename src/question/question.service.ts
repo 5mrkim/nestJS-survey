@@ -19,7 +19,14 @@ export class QuestionService {
     const survey = await this.surveyRepository.findOneBy({ survey_id: id });
     console.log('survey', survey?.title);
     if (survey) {
-      return this.questionRepository.save(data);
+      const questions = await this.questionRepository.create({
+        survey: {
+          survey_id: id,
+        },
+        title: data?.title,
+        score: data?.score,
+      });
+      return this.questionRepository.save(questions);
     }
   }
 

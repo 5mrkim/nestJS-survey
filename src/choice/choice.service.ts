@@ -1,3 +1,4 @@
+import { UpdateChoiceDto } from './dto/update-choice.dto';
 import { CreateChoiceDto } from './dto/create-choice.dto';
 import { Question } from './../entity/question.entity';
 import { Choice } from './../entity/choice.entity';
@@ -27,5 +28,22 @@ export class ChoiceService {
       const result = await this.choiceRepository.save(newChoice);
       return result;
     }
+  }
+  async updateChoice(id: number, data: UpdateChoiceDto) {
+    await this.choiceRepository.update(id, { ...data });
+    return;
+  }
+  async deleteChoice(id: number) {
+    const Choice = await this.choiceRepository.findBy({ choice_id: id });
+    if (Choice) return this.choiceRepository.remove(Choice);
+  }
+  async getAllChoice(id: number) {
+    const question_id = Number(id);
+    const result = await this.choiceRepository.findBy({
+      question: {
+        question_id: question_id,
+      },
+    });
+    return result;
   }
 }

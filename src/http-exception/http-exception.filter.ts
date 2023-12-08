@@ -10,7 +10,6 @@ import {
 @Catch(HttpException, CustomError)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception, host: ArgumentsHost) {
-    console.log('요긴타나요?');
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const status =

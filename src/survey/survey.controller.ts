@@ -60,4 +60,13 @@ export class SurveyController {
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.surveyService.delete(id);
   }
+
+  @Get(':surveyId')
+  @ApiOperation({
+    description: '설문지 삭제 API',
+    summary: '설문지 삭제 API',
+  })
+  getAllQuestions(@Param('surveyId', ParseIntPipe) surveyId: number) {
+    return this.surveyService.getAllQuestions(surveyId);
+  }
 }
