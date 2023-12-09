@@ -50,7 +50,7 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [Survey, Question, Choice, Answer, User],
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     SurveyModule,

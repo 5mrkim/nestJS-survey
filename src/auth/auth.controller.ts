@@ -7,7 +7,13 @@ import {
   ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  ValidationPipe,
+  BadRequestException,
+} from '@nestjs/common';
 import { ApiPostResponse } from 'src/common/decorator/swagger.decorator';
 
 @ApiTags('인증')
@@ -21,8 +27,21 @@ export class AuthController {
     summary: '회원가입',
   })
   @Post('join')
-  async signUp(@Body(new ValidationPipe()) joinRequestDto: SignUpDto) {
-    return this.AuthService.signUp(joinRequestDto);
+  async signUp(
+    @Body(new ValidationPipe()) { email, password, passwordConfirm }: SignUpDto,
+  ) {
+    if (password !== passwordConfirm) {
+      throw new BadRequestException(400, '입력한 비밀번호가 서로 다릅니다');
+    }
+    const isEmailDuplicateValidation =
+      await this.AuthService.findByEmail(email);
+
+    if (isEmailDuplicateValidation) {
+      console.log('??');
+      throw new BadRequestException(400, '이미 회원가입한 유저 입니다');
+    }
+
+    return this.AuthService.signUp(email, password);
   }
 
   @ApiOperation({
