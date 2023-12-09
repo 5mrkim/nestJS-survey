@@ -4,6 +4,7 @@ import { SuccessInterceptor } from './interceptors/success.interceptor';
 import { Answer } from './entity/answer.entity';
 import { Choice } from './entity/choice.entity';
 import { Question } from './entity/question.entity';
+import { User } from './entity/user.entity';
 import { SurveyService } from './survey/survey.service';
 import { Survey } from './entity/survey.entity';
 import { Module } from '@nestjs/common';
@@ -21,6 +22,8 @@ import { ChoiceController } from './choice/choice.controller';
 import { ChoiceModule } from './choice/choice.module';
 import { AnswerController } from './answer/answer.controller';
 import { AnswerModule } from './answer/answer.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -46,7 +49,7 @@ import { AnswerModule } from './answer/answer.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Survey, Question, Choice, Answer],
+      entities: [Survey, Question, Choice, Answer, User],
       synchronize: false,
       logging: true,
     }),
@@ -54,12 +57,14 @@ import { AnswerModule } from './answer/answer.module';
     QuestionModule,
     ChoiceModule,
     AnswerModule,
+    AuthModule,
   ],
   controllers: [
     AppController,
     QuestionController,
     ChoiceController,
     AnswerController,
+    AuthController,
   ],
   providers: [
     AppService,
