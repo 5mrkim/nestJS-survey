@@ -10,10 +10,26 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
+  //이메일 중복 찾기
+  async findByEmail(email: string) {
+    const result = await this.userRepository.findOneBy({ email });
+    let isEmail: boolean = false;
+    if (result) {
+      isEmail = true;
+    }
+    return isEmail;
+  }
 
   //로그인
   async signIn(data: SigninDto) {}
 
   //회원가입
-  async signUp(data: SignUpDto) {}
+  async signUp(email: string, password: string) {
+    // const results = this.findByEmail(email)
+    const result = await this.userRepository.create({
+      email,
+      password,
+    });
+    return await this.userRepository.save(result);
+  }
 }
