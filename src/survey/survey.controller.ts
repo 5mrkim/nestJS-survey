@@ -1,3 +1,4 @@
+import { PageReqDto } from './../common/page-dto';
 import { SurveyUpdateDto } from './dto/update-survey.dto';
 import { SurveyCreateDto } from './dto/create-survey.dto';
 import { SurveyService } from './survey.service';
@@ -13,20 +14,28 @@ import {
   Param,
   ParseIntPipe,
   Delete,
+  Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags, ApiProperty, ApiBody } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiTags,
+  ApiProperty,
+  ApiBody,
+  ApiExtraModels,
+} from '@nestjs/swagger';
 
 @ApiTags('Survey')
+@ApiExtraModels(PageReqDto)
 @Controller('survey')
 export class SurveyController {
   constructor(private readonly surveyService: SurveyService) {}
 
   @Get()
   @ApiOperation({
-    description: '설문지 조회 API',
+    description: '설문지(전체) 조회 API',
     summary: '설문지 조회 API',
   })
-  find() {
+  find(@Query() { pageNum, size }: PageReqDto) {
     return this.surveyService.find();
   }
   @Post()
@@ -63,8 +72,8 @@ export class SurveyController {
 
   @Get(':surveyId')
   @ApiOperation({
-    description: '설문지 삭제 API',
-    summary: '설문지 삭제 API',
+    description: '설문지(질문/답변)조회 API',
+    summary: '설문지(질문/답변) API',
   })
   getAllQuestions(@Param('surveyId', ParseIntPipe) surveyId: number) {
     return this.surveyService.getAllQuestions(surveyId);
