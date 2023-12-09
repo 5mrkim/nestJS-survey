@@ -1,4 +1,6 @@
-import { PageReqDto } from './../common/page-dto';
+import { PathIdDto } from './../question/dto/question-path.dto';
+import { ApiGetItemsResponse } from './../common/decorator/swagger.decorator';
+import { PageReqDto, PageResDto } from './../common/page-dto';
 import { SurveyUpdateDto } from './dto/update-survey.dto';
 import { SurveyCreateDto } from './dto/create-survey.dto';
 import { SurveyService } from './survey.service';
@@ -25,7 +27,7 @@ import {
 } from '@nestjs/swagger';
 
 @ApiTags('Survey')
-@ApiExtraModels(PageReqDto)
+@ApiExtraModels(PageReqDto, PageResDto, PathIdDto)
 @Controller('survey')
 export class SurveyController {
   constructor(private readonly surveyService: SurveyService) {}
@@ -35,6 +37,7 @@ export class SurveyController {
     description: '설문지(전체) 조회 API',
     summary: '설문지 조회 API',
   })
+  @ApiGetItemsResponse(PathIdDto)
   find(@Query() { pageNum, size }: PageReqDto) {
     return this.surveyService.find();
   }
