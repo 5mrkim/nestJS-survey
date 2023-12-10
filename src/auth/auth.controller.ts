@@ -1,6 +1,13 @@
-import { SigninDto, SignUpDto, SignInResponseDto } from './dto/auth-dto';
+import { User, UserAfterAuth } from './../common/decorator/user.decorator';
+import {
+  SigninDto,
+  SignUpDto,
+  SignInResponseDto,
+  RefreshResDto,
+} from './dto/auth-dto';
 import { AuthService } from './auth.service';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiExtraModels,
   ApiOperation,
@@ -13,12 +20,13 @@ import {
   Post,
   ValidationPipe,
   BadRequestException,
+  Headers,
 } from '@nestjs/common';
 import { ApiPostResponse } from 'src/common/decorator/swagger.decorator';
 import { Public } from 'src/common/decorator/public.decorator';
 
 @ApiTags('인증')
-@ApiExtraModels(SignInResponseDto)
+@ApiExtraModels(SignInResponseDto, RefreshResDto)
 @Controller('auth')
 export class AuthController {
   constructor(private AuthService: AuthService) {}
@@ -60,5 +68,29 @@ export class AuthController {
   @Post('login')
   async signIn(@Body(new ValidationPipe()) loginRequestDto: SigninDto) {
     return this.AuthService.signIn(loginRequestDto);
+  }
+
+  @ApiPostResponse(RefreshResDto)
+  @ApiBearerAuth()
+  @ApiOperation({
+    description: '리프레시토큰 불러오기',
+    summary: '리프레시토큰 불러오기',
+  })
+  @Post('refresh')
+  async refresh(
+    @Headers('authorization') authorization,
+    @User() user: UserAfterAuth,
+  ) {
+    console.log(authorization);
+    const token = /Bearer\s(.+)/.exec(authorization)[1];
+    const { accessToken, refreshToken } = await this.AuthService.refresh(
+      token,
+      user.id,
+    );
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }
