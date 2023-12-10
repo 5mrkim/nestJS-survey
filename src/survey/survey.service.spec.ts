@@ -1,3 +1,5 @@
+import { SurveyController } from './survey.controller';
+import { SurveyModule } from './survey.module';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SurveyService } from './survey.service';
 
@@ -6,6 +8,8 @@ describe('SurveyService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [SurveyModule],
+      controllers: [SurveyController],
       providers: [SurveyService],
     }).compile();
 

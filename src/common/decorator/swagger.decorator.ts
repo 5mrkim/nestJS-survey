@@ -29,6 +29,7 @@ export const ApiPostResponse = <TModel extends Type<any>>(model: TModel) => {
   );
 };
 
+//페이지 관련 리스폰스
 export const ApiGetItemsResponse = <TModel extends Type<any>>(
   model: TModel,
 ) => {

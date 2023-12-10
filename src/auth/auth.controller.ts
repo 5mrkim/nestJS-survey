@@ -15,6 +15,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { ApiPostResponse } from 'src/common/decorator/swagger.decorator';
+import { Public } from 'src/common/decorator/public.decorator';
 
 @ApiTags('인증')
 @ApiExtraModels(SignInResponseDto)
@@ -27,6 +28,7 @@ export class AuthController {
     summary: '회원가입',
   })
   @Post('join')
+  @Public()
   async signUp(
     @Body(new ValidationPipe()) { email, password, passwordConfirm }: SignUpDto,
   ) {
@@ -54,6 +56,7 @@ export class AuthController {
   //     },
   //   })
   @ApiPostResponse(SignInResponseDto)
+  @Public()
   @Post('login')
   async signIn(@Body(new ValidationPipe()) loginRequestDto: SigninDto) {
     return this.AuthService.signIn(loginRequestDto);
