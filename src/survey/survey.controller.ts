@@ -1,3 +1,4 @@
+import { UserAfterAuth } from './../common/decorator/user.decorator';
 import { PathIdDto } from './../question/dto/question-path.dto';
 import { ApiGetItemsResponse } from './../common/decorator/swagger.decorator';
 import { PageReqDto, PageResDto } from './../common/page-dto';
@@ -24,7 +25,9 @@ import {
   ApiProperty,
   ApiBody,
   ApiExtraModels,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
+import { User } from 'src/common/decorator/user.decorator';
 
 @ApiTags('Survey')
 @ApiExtraModels(PageReqDto, PageResDto, PathIdDto)
@@ -37,8 +40,10 @@ export class SurveyController {
     description: '설문지(전체) 조회 API',
     summary: '설문지 조회 API',
   })
+  @ApiBearerAuth()
   @ApiGetItemsResponse(PathIdDto)
-  find(@Query() { pageNum, size }: PageReqDto) {
+  find(@Query() { pageNum, size }: PageReqDto, @User() user: UserAfterAuth) {
+    console.log('user===>', user);
     return this.surveyService.find();
   }
   @Post()
