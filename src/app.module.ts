@@ -1,3 +1,4 @@
+import { RefreshToken } from './entity/refreshtoken.entity';
 import { QuestionService } from './question/question.service';
 import { HttpExceptionFilter } from './http-exception/http-exception.filter';
 import { SuccessInterceptor } from './interceptors/success.interceptor';
@@ -49,7 +50,7 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Survey, Question, Choice, Answer, User],
+      entities: [Survey, Question, Choice, Answer, User, RefreshToken],
       synchronize: false,
       logging: true,
     }),

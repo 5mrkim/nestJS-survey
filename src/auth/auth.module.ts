@@ -1,3 +1,4 @@
+import { RefreshToken } from './../entity/refreshtoken.entity';
 import { JwtAuthGuard } from './jwt.auth.guard';
 import { JwtStrategy } from './jwt.strategy';
 import { User } from './../entity/user.entity';
@@ -18,7 +19,7 @@ import { APP_GUARD } from '@nestjs/core';
       },
     }),
     PassportModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, RefreshToken]),
   ],
   controllers: [AuthController],
   providers: [
