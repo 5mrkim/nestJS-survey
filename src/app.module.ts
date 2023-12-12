@@ -1,22 +1,19 @@
+import { LoggerMiddleware } from './../middleware/logger.middleware';
 import { RefreshToken } from './entity/refreshtoken.entity';
-import { QuestionService } from './question/question.service';
-import { HttpExceptionFilter } from './http-exception/http-exception.filter';
 import { SuccessInterceptor } from './interceptors/success.interceptor';
 import { Answer } from './entity/answer.entity';
 import { Choice } from './entity/choice.entity';
 import { Question } from './entity/question.entity';
 import { User } from './entity/user.entity';
-import { SurveyService } from './survey/survey.service';
 import { Survey } from './entity/survey.entity';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, Logger } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { SurveyController } from './survey/survey.controller';
 import { SurveyModule } from './survey/survey.module';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ApolloDriver } from '@nestjs/apollo';
 import { QuestionController } from './question/question.controller';
 import { QuestionModule } from './question/question.module';
 import { ChoiceController } from './choice/choice.controller';
@@ -69,7 +66,12 @@ import { AuthModule } from './auth/auth.module';
   ],
   providers: [
     AppService,
+    Logger,
     { provide: APP_INTERCEPTOR, useClass: SuccessInterceptor },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

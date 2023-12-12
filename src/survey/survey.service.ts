@@ -18,9 +18,11 @@ export class SurveyService {
     @InjectRepository(Choice)
     private choiceRepository: Repository<Choice>,
   ) {}
-  async find(): Promise<Survey[] | null> {
+  async find(pageNum: number, size: number): Promise<Survey[] | null> {
     const survey = await this.surveyRepository.find({
       relations: ['questions'],
+      skip: (pageNum - 1) * size,
+      take: size,
     });
     if (!survey.length) {
       return null; // 또는 다른 적절한 에러 처리
