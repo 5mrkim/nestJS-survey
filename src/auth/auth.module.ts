@@ -4,7 +4,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { User } from './../entity/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -24,6 +24,7 @@ import { APP_GUARD } from '@nestjs/core';
   controllers: [AuthController],
   providers: [
     AuthService,
+    Logger,
     JwtStrategy,
     {
       provide: APP_GUARD,

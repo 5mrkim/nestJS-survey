@@ -5,6 +5,7 @@ import { Injectable, HttpException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from 'src/common/\benum/user.enum';
 @Injectable()
 export class AuthService {
   constructor(
@@ -102,5 +103,9 @@ export class AuthService {
     await this.refreshTokenRepository.save(refreshTokenEntity);
 
     return { accessToken, refreshToken };
+  }
+  async checkUserRoles(id: string) {
+    const user = await this.userRepository.findOneBy({ id });
+    return user.role === Role.Admin;
   }
 }
