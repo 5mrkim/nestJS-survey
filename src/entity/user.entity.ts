@@ -1,7 +1,16 @@
+import { Role } from './../common/enum/user.enum';
+import { RefreshToken } from './refreshtoken.entity';
 // survey.entity.ts
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Question } from './question.entity';
+import { Video } from './video.entity';
 
 //설문지 테이블
 
@@ -20,7 +29,17 @@ export class User {
   @Field(() => String)
   password: string;
 
+  @Column({ type: 'enum', enum: Role, nullable: true })
+  @Field(() => String)
+  role: Role = Role.User;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   @Field(() => String) // created_at에 대한 GraphQL 타입 추가
   created_at: Date;
+
+  @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.user)
+  refreshToken: RefreshToken;
+
+  @OneToMany(() => Video, (video) => video.user)
+  videos: Video[];
 }

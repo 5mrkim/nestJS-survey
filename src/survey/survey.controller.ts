@@ -1,3 +1,6 @@
+import { ThrottlerBehindProxyGuard } from './../common/guard/throttler-behind-proxy.guard';
+import { Roles } from './../common/decorator/role.decorator';
+import { UserAfterAuth } from './../common/decorator/user.decorator';
 import { PathIdDto } from './../question/dto/question-path.dto';
 import { ApiGetItemsResponse } from './../common/decorator/swagger.decorator';
 import { PageReqDto, PageResDto } from './../common/page-dto';
@@ -17,6 +20,7 @@ import {
   ParseIntPipe,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiOperation,
@@ -24,22 +28,28 @@ import {
   ApiProperty,
   ApiBody,
   ApiExtraModels,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
+import { User } from 'src/common/decorator/user.decorator';
+import { Role } from 'src/common/\benum/user.enum';
 
 @ApiTags('Survey')
 @ApiExtraModels(PageReqDto, PageResDto, PathIdDto)
+@UseGuards(ThrottlerBehindProxyGuard)
 @Controller('survey')
 export class SurveyController {
   constructor(private readonly surveyService: SurveyService) {}
 
   @Get()
+  @Roles(Role.Admin)
   @ApiOperation({
     description: '설문지(전체) 조회 API',
     summary: '설문지 조회 API',
   })
+  @ApiBearerAuth()
   @ApiGetItemsResponse(PathIdDto)
-  find(@Query() { pageNum, size }: PageReqDto) {
-    return this.surveyService.find();
+  find(@Query() { pageNum, size }: PageReqDto, @User() user: UserAfterAuth) {
+    return this.surveyService.find(pageNum, size);
   }
   @Post()
   @ApiOperation({

@@ -6,8 +6,8 @@ import { Query, Resolver } from '@nestjs/graphql';
 export class SurveyResolver {
   constructor(private surveyService: SurveyService) {}
 
-  @Query(() => [Survey])
-  surveys(): Promise<Survey[]> {
-    return this.surveyService.find();
-  }
+  // @Query(() => [Survey])
+  // surveys(): Promise<Survey[]> {
+  //   return this.surveyService.find();
+  // }
 }
