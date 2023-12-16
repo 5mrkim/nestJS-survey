@@ -1,3 +1,4 @@
+import { CqrsModule } from '@nestjs/cqrs';
 import { LoggerMiddleware } from './../middleware/logger.middleware';
 import { RefreshToken } from './entity/refreshtoken.entity';
 import { SuccessInterceptor } from './interceptors/success.interceptor';
@@ -22,9 +23,18 @@ import { AnswerController } from './answer/answer.controller';
 import { AnswerModule } from './answer/answer.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
-
+import { ThrottlerModule } from '@nestjs/throttler';
+import { VideoController } from './video/video.controller';
+import { VideoModule } from './video/video.module';
+import { Video } from './entity/video.entity';
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60,
+        limit: 10,
+      },
+    ]),
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       playground: true,
@@ -47,15 +57,17 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Survey, Question, Choice, Answer, User, RefreshToken],
-      synchronize: false,
+      entities: [Survey, Question, Choice, Answer, User, RefreshToken, Video],
+      synchronize: true,
       logging: true,
     }),
+    CqrsModule,
     SurveyModule,
     QuestionModule,
     ChoiceModule,
     AnswerModule,
     AuthModule,
+    VideoModule,
   ],
   controllers: [
     AppController,
@@ -63,6 +75,7 @@ import { AuthModule } from './auth/auth.module';
     ChoiceController,
     AnswerController,
     AuthController,
+    VideoController,
   ],
   providers: [
     AppService,

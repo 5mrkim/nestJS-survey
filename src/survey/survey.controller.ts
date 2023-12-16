@@ -1,3 +1,4 @@
+import { ThrottlerBehindProxyGuard } from './../common/guard/throttler-behind-proxy.guard';
 import { Roles } from './../common/decorator/role.decorator';
 import { UserAfterAuth } from './../common/decorator/user.decorator';
 import { PathIdDto } from './../question/dto/question-path.dto';
@@ -19,6 +20,7 @@ import {
   ParseIntPipe,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiOperation,
@@ -33,6 +35,7 @@ import { Role } from 'src/common/\benum/user.enum';
 
 @ApiTags('Survey')
 @ApiExtraModels(PageReqDto, PageResDto, PathIdDto)
+@UseGuards(ThrottlerBehindProxyGuard)
 @Controller('survey')
 export class SurveyController {
   constructor(private readonly surveyService: SurveyService) {}
