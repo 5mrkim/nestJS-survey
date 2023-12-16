@@ -31,7 +31,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('설문지 API문서')
-    .setDescription('설문지 API 문서입니다.')
+    .setDescription('설문지 API 문서입니다')
     .setVersion('1.0.0')
     .addBearerAuth()
     .build();
