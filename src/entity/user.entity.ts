@@ -10,6 +10,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Question } from './question.entity';
+import { Video } from './video.entity';
 
 //설문지 테이블
 
@@ -28,7 +29,7 @@ export class User {
   @Field(() => String)
   password: string;
 
-  @Column({ type: 'enum', enum: Role })
+  @Column({ type: 'enum', enum: Role, nullable: true })
   @Field(() => String)
   role: Role = Role.User;
 
@@ -38,4 +39,7 @@ export class User {
 
   @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.user)
   refreshToken: RefreshToken;
+
+  @OneToMany(() => Video, (video) => video.user)
+  videos: Video[];
 }

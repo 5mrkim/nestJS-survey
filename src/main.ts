@@ -44,7 +44,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document, customOptions);
   await app.listen(port);
   Logger.log(`${port} on listening`);
-  Logger.log(process.env.STAGE);
+  Logger.log('환경', process.env.NODE_ENV);
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
