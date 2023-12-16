@@ -1,11 +1,11 @@
-name: CI/CD Docker
+name: CI/CD NestJS-Docker
 
 on:
   push:
     branches: [main]
 
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/fastcampus-nestjs
+  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/test
   VERSION: ${{ github.sha }}
   NAME: cicd_test
 
